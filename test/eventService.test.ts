@@ -1,3 +1,4 @@
+import { Event } from "../src/api/v1/models/eventModel";
 import * as eventService from "../src/api/v1/services/eventService";
 import * as firestoreRepository from "../src/api/v1/repositories/firestoreRepository";
 
@@ -9,11 +10,10 @@ describe("Event Service", () => {
     });
 
     describe("createEvent", () => {
-        it("should create an event successfully", async () => {
+        it("should create an event successfully", async (): Promise<void> => {
             // Arrange
-            const mockEventData = {
+            const mockEventData: Partial<Event> = {
                 name: "Tech Conference",
-                date: "2026-12-25T09:00:00.000Z",
                 capacity: 100,
                 registrationCount: 0,
                 status: "active",
@@ -28,7 +28,7 @@ describe("Event Service", () => {
             );
 
             // Act
-            const result = await eventService.createEvent(mockEventData);
+            const result: string = await eventService.createEvent(mockEventData);
 
             // Assert
             expect(firestoreRepository.createDocument).toHaveBeenCalled();
@@ -37,20 +37,23 @@ describe("Event Service", () => {
     });
 
     describe("getAllEvents", () => {
-        it("should return all events successfully", async () => {
+        it("should return all events successfully", async (): Promise<void> => {
             // Arrange
-            const mockDocs = [
+            const mockDocs: {
+                id: string;
+                data: () => Record<string, unknown>;
+            }[] = [
                 {
                     id: "evt_000001",
-                    data: () => ({
+                    data: (): Record<string, unknown> => ({
                         name: "Tech Conference",
-                        date: { toDate: () => new Date("2026-12-25") },
+                        date: { toDate: (): Date => new Date("2026-12-25") },
                         capacity: 100,
                         registrationCount: 0,
                         status: "active",
                         category: "general",
-                        createdAt: { toDate: () => new Date() },
-                        updatedAt: { toDate: () => new Date() },
+                        createdAt: { toDate: (): Date => new Date() },
+                        updatedAt: { toDate: (): Date => new Date() },
                     }),
                 },
             ];
@@ -59,7 +62,7 @@ describe("Event Service", () => {
             });
 
             // Act
-            const result = await eventService.getAllEvents();
+            const result: Event[] = await eventService.getAllEvents();
 
             // Assert
             expect(firestoreRepository.getDocuments).toHaveBeenCalled();
@@ -69,19 +72,22 @@ describe("Event Service", () => {
     });
 
     describe("getEventById", () => {
-        it("should return event by id successfully", async () => {
+        it("should return event by id successfully", async (): Promise<void> => {
             // Arrange
-            const mockDoc = {
+            const mockDoc: {
+                id: string;
+                data: () => Record<string, unknown>;
+            } = {
                 id: "evt_000001",
-                data: () => ({
+                data: (): Record<string, unknown> => ({
                     name: "Tech Conference",
-                    date: { toDate: () => new Date("2026-12-25") },
+                    date: { toDate: (): Date => new Date("2026-12-25") },
                     capacity: 100,
                     registrationCount: 0,
                     status: "active",
                     category: "general",
-                    createdAt: { toDate: () => new Date() },
-                    updatedAt: { toDate: () => new Date() },
+                    createdAt: { toDate: (): Date => new Date() },
+                    updatedAt: { toDate: (): Date => new Date() },
                 }),
             };
             (firestoreRepository.getDocumentById as jest.Mock).mockResolvedValue(
@@ -89,7 +95,7 @@ describe("Event Service", () => {
             );
 
             // Act
-            const result = await eventService.getEventById("evt_000001");
+            const result: Event | null = await eventService.getEventById("evt_000001");
 
             // Assert
             expect(firestoreRepository.getDocumentById).toHaveBeenCalledWith(
@@ -101,9 +107,9 @@ describe("Event Service", () => {
     });
 
     describe("updateEvent", () => {
-        it("should update an event successfully", async () => {
+        it("should update an event successfully", async (): Promise<void> => {
             // Arrange
-            const mockUpdateData = { name: "Updated Conference" };
+            const mockUpdateData: Partial<Event> = { name: "Updated Conference" };
             (firestoreRepository.updateDocument as jest.Mock).mockResolvedValue(
                 undefined
             );
@@ -121,7 +127,7 @@ describe("Event Service", () => {
     });
 
     describe("deleteEvent", () => {
-        it("should delete an event successfully", async () => {
+        it("should delete an event successfully", async (): Promise<void> => {
             // Arrange
             (firestoreRepository.deleteDocument as jest.Mock).mockResolvedValue(
                 undefined
