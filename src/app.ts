@@ -5,7 +5,9 @@ dotenv.config();
 
 import express, { Express } from "express";
 import morgan from "morgan";
+import cors from "cors";
 import { getHelmetConfig } from "../config/helmetConfig";
+import { getCorsOptions } from "../config/corsConfig";
 import healthRoutes from "./api/v1/routes/healthRoutes";
 import eventRoutes from "./api/v1/routes/eventRoutes";
 
@@ -14,6 +16,7 @@ const app: Express = express();
 
 // Security Middleware
 app.use(getHelmetConfig());
+app.use(cors(getCorsOptions()));
 
 // Middleware
 app.use(express.json());
