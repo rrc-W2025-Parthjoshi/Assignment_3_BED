@@ -1,5 +1,117 @@
 import Joi from "joi";
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Event:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: Unique identifier for the event
+ *           example: "abc123"
+ *         name:
+ *           type: string
+ *           description: Name of the event
+ *           example: "Tech Conference 2024"
+ *         date:
+ *           type: string
+ *           format: date-time
+ *           description: Date and time of the event
+ *           example: "2024-12-01T10:00:00Z"
+ *         capacity:
+ *           type: integer
+ *           description: Maximum number of attendees
+ *           example: 100
+ *         registrationCount:
+ *           type: integer
+ *           description: Current number of registrations
+ *           example: 0
+ *         status:
+ *           type: string
+ *           enum: [active, cancelled, completed]
+ *           description: Current status of the event
+ *           example: "active"
+ *         category:
+ *           type: string
+ *           enum: [conference, workshop, meetup, seminar, general]
+ *           description: Category of the event
+ *           example: "conference"
+ *     CreateEvent:
+ *       type: object
+ *       required:
+ *         - name
+ *         - date
+ *         - capacity
+ *       properties:
+ *         name:
+ *           type: string
+ *           minLength: 3
+ *           description: Name of the event
+ *           example: "Tech Conference 2024"
+ *         date:
+ *           type: string
+ *           format: date-time
+ *           description: Date and time of the event (must be in the future)
+ *           example: "2024-12-01T10:00:00Z"
+ *         capacity:
+ *           type: integer
+ *           minimum: 5
+ *           description: Maximum number of attendees
+ *           example: 100
+ *         registrationCount:
+ *           type: integer
+ *           minimum: 0
+ *           description: Current number of registrations (defaults to 0)
+ *           example: 0
+ *         status:
+ *           type: string
+ *           enum: [active, cancelled, completed]
+ *           description: Current status of the event (defaults to active)
+ *           example: "active"
+ *         category:
+ *           type: string
+ *           enum: [conference, workshop, meetup, seminar, general]
+ *           description: Category of the event (defaults to general)
+ *           example: "conference"
+ *     UpdateEvent:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *           minLength: 3
+ *           description: Name of the event
+ *           example: "Tech Conference 2024 Updated"
+ *         date:
+ *           type: string
+ *           format: date-time
+ *           description: Date and time of the event (must be in the future)
+ *           example: "2024-12-01T10:00:00Z"
+ *         capacity:
+ *           type: integer
+ *           minimum: 5
+ *           description: Maximum number of attendees
+ *           example: 100
+ *         status:
+ *           type: string
+ *           enum: [active, cancelled, completed]
+ *           description: Current status of the event
+ *           example: "active"
+ *         category:
+ *           type: string
+ *           enum: [conference, workshop, meetup, seminar, general]
+ *           description: Category of the event
+ *           example: "conference"
+ *     Error:
+ *       type: object
+ *       properties:
+ *         error:
+ *           type: string
+ *           description: Error message
+ *           example: "Validation error: name is required"
+ */
+
 export const eventSchemas = {
     create: {
         body: Joi.object({
