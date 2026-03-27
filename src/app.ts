@@ -5,11 +5,15 @@ dotenv.config();
 
 import express, { Express } from "express";
 import morgan from "morgan";
+import { getHelmetConfig } from "../config/helmetConfig";
 import healthRoutes from "./api/v1/routes/healthRoutes";
 import eventRoutes from "./api/v1/routes/eventRoutes";
 
 // Initialize Express application
 const app: Express = express();
+
+// Security Middleware
+app.use(getHelmetConfig());
 
 // Middleware
 app.use(express.json());
