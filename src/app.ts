@@ -8,6 +8,7 @@ import morgan from "morgan";
 import cors from "cors";
 import { getHelmetConfig } from "../config/helmetConfig";
 import { getCorsOptions } from "../config/corsConfig";
+import setupSwagger from "../config/swagger";
 import healthRoutes from "./api/v1/routes/healthRoutes";
 import eventRoutes from "./api/v1/routes/eventRoutes";
 
@@ -25,5 +26,8 @@ app.use(morgan("combined"));
 // Routes
 app.use("/api/v1", healthRoutes);
 app.use("/api/v1/events", eventRoutes);
+
+// Setup Swagger
+setupSwagger(app);
 
 export default app;
